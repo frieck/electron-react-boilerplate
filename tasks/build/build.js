@@ -13,7 +13,6 @@ var livereload = require('gulp-livereload');
 var babel = require('gulp-babel');
 var jetpack = require('fs-jetpack');
 
-var bundle = require('./bundle');
 var generateSpecImportsFile = require('./generate_spec_imports');
 var utils = require('../utils');
 
@@ -60,20 +59,6 @@ var copyTask = function() {
 gulp.task('copy', ['clean'], copyTask);
 gulp.task('copy-watch', copyTask);
 
-
-var bundleApplication = function() {
-    return Q.all([
-        bundle(destDir.path('background.js'), destDir.path('background.js')),
-        //bundle(destDir.path('app.jsx'), destDir.path('app.js')),
-    ]);
-};
-
-var bundleSpecs = function() {
-    return generateSpecImportsFile().then(function(specEntryPointPath) {
-        return bundle(specEntryPointPath, destDir.path('spec.js'));
-    });
-};
-
 var react = function() {
     var tsProject = ts.createProject(projectDir.path("tsconfig.json"));
 
@@ -99,16 +84,6 @@ var typescriptTask = function() {
         }));
 };
 gulp.task('typescript', ['clean'], typescriptTask);
-
-var bundleTask = function() {
-    if (utils.getEnvName() === 'test') {
-        return bundleSpecs();
-    }
-    return bundleApplication();
-};
-gulp.task('bundle', ['clean', "typescript", "react"], bundleTask);
-gulp.task('bundle-watch', bundleTask);
-
 
 var lessTask = function() {
     return gulp.src('app/stylesheets/main.less')
@@ -141,9 +116,6 @@ gulp.task('package-json', ['clean'], function() {
 
 
 gulp.task('watch', function() {
-    watch('app/**/*.js', batch(function(events, done) {
-        gulp.start('bundle-watch', done);
-    }));
     watch(paths.copyFromAppDir, {
         cwd: 'app'
     }, batch(function(events, done) {
@@ -155,4 +127,4 @@ gulp.task('watch', function() {
 });
 
 
-gulp.task('build', ['bundle', 'less', 'typescript', 'react', 'copy', 'environment', 'package-json']);
+gulp.task('build', ['less', 'typescript', 'react', 'copy', 'environment', 'package-json']);
