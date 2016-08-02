@@ -1,4 +1,4 @@
-electron-angular2-boilerplate
+electron-react-boilerplate
 ==============
 Comprehensive boilerplate application for [Electron runtime](http://electron.atom.io) with support to React (jsx) and TypeScript compilation.  
 
@@ -6,7 +6,7 @@ Comprehensive boilerplate application for [Electron runtime](http://electron.ato
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 Jakub Szwacz
+Copyright (c) 2016 Felipe Augusto Rieck
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
