@@ -22,7 +22,7 @@ module.exports = {
             // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
             {
                 test: /\.tsx?$/,
-                loader: "ts-loader"
+                loader: "babel-loader?presets[]=es2015,presets[]=react!ts-loader"
             }, {
                 test: /\.(scss|css)$/,
                 loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss!sass'
@@ -46,10 +46,20 @@ module.exports = {
         "react-dom": "ReactDOM"
     },
 
-    watch: true,
     postcss: [autoprefixer],
 
     sassLoader: {
         data: '$unit: 0.8em;'
+    },
+
+    plugins: [
+        new webpack.optimize.UglifyJsPlugin({
+    compress: {
+        warnings: false
     }
+})
+    ],
+
+    target: "electron",
+    watch: true,
 };
